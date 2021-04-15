@@ -105,6 +105,8 @@ namespace AsyncPattern
                 GC.SuppressFinalize(this);
             }
 
+            /// The disposing parameter should be false when called from a finalizer, and true when called from the IDisposable.Dispose method.
+            /// In other words, it is true when deterministically called and false when non-deterministically called.
             protected virtual void Dispose(bool disposing)
             {
                 if (disposing)
@@ -115,6 +117,7 @@ namespace AsyncPattern
                     }
 
                     // Other logic . . .
+                    // You may consider setting the field to null; however, that isn't necessary for the GC to handle it.
                 }
             }
         }
@@ -141,6 +144,7 @@ namespace AsyncPattern
                 }
             }
 
+            // DisposeAsync method required ONLY by IAsyncDisposable
             public async ValueTask DisposeAsync()
             {
                 await this.DisposeAsyncCore();
